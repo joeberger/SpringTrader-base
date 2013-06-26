@@ -1,0 +1,27 @@
+<div class="well show-well">
+    <div class="title"><h3>{{accountSummary}}</h3></div>
+    <div class="table-outer">
+        <table class="table">
+            <tr>
+                <td>{{currentBalance}}</td>
+                <td class="gray-background">{{balance + totalMarketValue | currency}}</td>
+            </tr>
+            <tr>
+                <td>{{openingBalance}}</td>
+                <td class="gray-background">{{openbalance | currency}}</td>
+            </tr>
+            <tr>
+                <td>{{cashBalance}}</td>
+                <td class="gray-background">{{balance | currency}}</td>
+            </tr>
+            <tr>
+                <td>{{holdingsTotal}}</td>
+                <td class="gray-background">{{round(totalMarketValue) | currency}}</td>
+            </tr>
+            <tr class="summary "+({{gain}} > 0 ? nano.conf.successCss : nano.conf.errorCss )>
+                <td>{{currentGainLoss}}</td>
+                <td class="average">{{gain | currency}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
