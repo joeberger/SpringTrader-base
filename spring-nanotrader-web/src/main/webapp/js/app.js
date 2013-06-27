@@ -6,17 +6,18 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-angular.module('appTrader', ['ngResource'])
+var appTrader = angular.module('appTrader', ['ngResource'])
 .config(function ($routeProvider, $locationProvider) {
     // Set up our routes
     $routeProvider
-      .when('/dashboard', {
-        controller: 'DashboardCtrl',
-        templateUrl: 'templates/dashboard.html'
-      })
-      .when('/marketSummary', {
+      .when('/', {
         controller: 'marketSummaryCtrl',
-        templateUrl: 'templates/marketSummary.html'
+        templateUrl: app.conf.tpls.marketSummary
+      })
+/*     
+      .when('/dashboard', {
+        controller: 'DashboardCtrl'//,
+        //templateUrl: 'templates/dashboard.html'
       })
       .when('/portfolio', {
         controller: 'PortfolioCtrl',
@@ -27,7 +28,7 @@ angular.module('appTrader', ['ngResource'])
         templateUrl: 'templates/trade.html'
       })
       .otherwise({redirectTo: '/dashboard'});
-
+*/
     // Use HTML5 mode (History API) when changing URL
     $locationProvider.html5Mode(true);
   })
@@ -35,13 +36,15 @@ angular.module('appTrader', ['ngResource'])
 
   // Setup Factories that can be requested by any other
   // part of the module, and then injected by Angular
+  .factory('marketSummary', function ($resource) {
+    return $resource(app.conf.urls.marketSummary, {
+     // query: {method:'GET', isArray:true}
+    });
+  })
+/*
   .factory('accountProfile', function ($resource) {
     //return $resource('/api/contact/:name', { name: '@name.clean' });
-    return $resource('/spring-nanotrader-services/api/accountProfile', {});
-    
-  })
-  .factory('marketSummary', function ($resource) {
-    return $resource(app.conf.urls.marketSummary, {});
+    return $resource('/spring-nanotrader-services/api/accountProfile', {});    
   })
   .factory('holdingSummary', function ($resource) {
     return $resource('/spring-nanotrader-services/api/holdingSummary', {});
@@ -49,17 +52,17 @@ angular.module('appTrader', ['ngResource'])
   .factory('portfolioSummary', function ($resource) {
     return $resource('/spring-nanotrader-services/api/portfolioSummary', {});
   })
+*/
 
   // Controllers
-  .controller('marketSummaryCtrl', function ($scope, $resource) {
-
-
+  .controller('marketSummaryCtrl', function ($scope, $resource, marketSummary) {
+    $scope.marketSummary = marketSummary.get();
+    console.log($scope.marketSummary);
   })
+/*
   .controller('DashboardCtrl', function ($scope, $resource) {})
-  .controller('PortfolioCtrl', function ($scope, $resource, portfolioSummary) {
-    // Use the $resource query method to grab all contacts
-    $scope.contacts = Contact.query();
-  })
+  .controller('PortfolioCtrl', function ($scope, $resource, portfolioSummary) {});
+
   .controller('TradeCtrl', function ($scope, $resource, $routeParams, Contact, $timeout, $location) {
     // Grab just a single contact
     $scope.contact = Contact.get({ name: $routeParams.name });
@@ -89,3 +92,4 @@ angular.module('appTrader', ['ngResource'])
       });
     };
   });
+*/

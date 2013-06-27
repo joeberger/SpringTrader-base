@@ -1,0 +1,57 @@
+<div class="row show-table">
+    <div class="span4">
+        <table class="table">
+            <tr>
+                <th colspan="3"><span class="icon-custom icon-gains"></span>Day's Gains</th>
+            </tr>
+            <tr class="caps" ng-repeat="i in topGainers">
+                <td id="ms-tg-sym-{{i}}" title="">{{i.symbol}}</td>
+            </tr>
+            <tr ng-repeat="i in topGainers">
+                <td id="ms-tg-price-{{i}}" title="">{{i.price}}</td>
+            </tr>
+            <tr ng-repeat="i in topGainers">
+                <td id="ms-tg-change-{{i}}" title="">
+                    <span>&uarr;</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="span4 center-table">
+        <table class="table">
+            <tr>
+                <th colspan="2"><div class="logo-table" title="nanotrader"/></th>
+            </tr>
+            <tr>
+                <td>Index:</td>
+                <td id="ms-index"></td>
+            </tr>
+            <tr>
+                <td>Volume:</td>
+                <td id="ms-volume"></td>
+            </tr>
+            <tr>
+                <td>Change:</td>
+                <td>
+                    <span id="ms-change"></span><span id="ms-change-arrow"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="span4">
+        <table class="table">
+            <tr>
+                <th colspan="3"><span class="icon-custom icon-lost"></span>Day's Losses</th>
+            </tr>
+            <tr class="caps" ng-repeat="i in topLosers">
+                <td id="ms-tl-sym-{{i}}" title="">{{i.symbol}}</td>
+            </tr>
+            <tr ng-repeat="i in topLosers">
+                <td id="ms-tl-price-{{i}}" title="">{{i.price}}</td>
+            </tr>
+            <tr ng-repeat="i in topLosers">
+                <td id="ms-tl-change-{{i}}" title=""><span>&darr;</span></td>
+            </tr>
+        </table>
+    </div>
+</div>
