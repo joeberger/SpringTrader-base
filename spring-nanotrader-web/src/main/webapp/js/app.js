@@ -1,16 +1,19 @@
 /**
- * Modules of Spring Trader app
+ * Module, controllers, directives and factories for Spring Trader app
  * @author Joe Berger
  */
 
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var appTrader = angular.module('appTrader', ['ngResource'])
+var appTrader = angular.module('appTrader', ['ngResource', 'ngCookies'])
 .config(function ($routeProvider, $locationProvider) {
     // Set up our routes
     $routeProvider
-/*      .when('/', {
+/*      .when('/login',{
+        controller: 'LoginCtrl'
+      })
+      .when('/', {
         controller: 'marketSummaryCtrl',
         templateUrl: app.conf.tpls.marketSummary
       })
@@ -55,18 +58,56 @@ var appTrader = angular.module('appTrader', ['ngResource'])
 */
 
   // Controllers
-  .controller('mainCtrl', function ($scope, $resource) {
-    $scope.strings = app.strings;
+  .controller('mainCtrl', function ($scope, $cookieStore) {
+    $scope.strings = app.strings; // load i18n strings into scope
+
+    // Check if the user is logged in
+    var userSession = $cookieStore.get(app.conf.sessionCookieName);
+
+    if (!userSession){
+      // Show login form
+      $scope.showLoading = false;
+      $scope.showLogin = true;
+      
+    }
+  })
+  .controller('LoginCtrl', function($scope, $http, $routeParams, $location, $filter){
+    $scope.logMeIn = function() {
+      $http.post(app.conf.urls.login, $filter('json')({username : $scope.username, password : $scope.password}))
+        .success(function(data, status, headers, config) {
+          $scope.showLogin = false;
+
+          debugger;
+          // this callback will be called asynchronously
+          // when the response is available
+        })
+        .error(function(data, status, headers, config) {
+          debugger;
+          // called asynchronously if an error occurs
+          // or server returns response with an error status.
+        });
+    }
+
   })
   .controller('marketSummaryCtrl', function ($scope, $resource, marketSummary) {
     $scope.marketSummary = marketSummary.get();
   })
+
+  // Directives
   .directive('marketSummaryDir', function(){
     return {
       restrict: 'E',
-      // This HTML will replace the market summary directive.
+      // This HTML from template will replace the market summary directive.
       replace: true,
       templateUrl: app.conf.tpls.marketSummary      
+    }
+  })
+  .directive('loginDir', function(){
+    return {
+      restrict: 'E',
+      // This HTML from template will replace the market summary directive.
+      replace: true,
+      templateUrl: app.conf.tpls.login      
     }
   })
 /*

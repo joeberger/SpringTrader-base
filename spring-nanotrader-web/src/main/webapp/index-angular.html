@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en-US" class="no-js ie6"> <![endif]-->
-<!--[if IE 7   ]>      <html lang="en-US" class="no-js ie7"> <![endif]-->
-<!--[if IE 8   ]>      <html lang="en-US" class="no-js ie8"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en-US" class="no-js"> <!--<![endif]-->
 <html lang="en" ng-app="appTrader">
     <head>
         <meta charset="utf-8">
@@ -70,6 +66,8 @@
 -->
         <script src="js/angular.min.js"></script>
         <script src="js/angular-resource.min.js"></script>
+        <script src="js/angular-cookies.min.js"></script>
+        
         <script src="js/bootstrap.min.js"></script>
 
         <script src="js/app.js"></script>
@@ -81,11 +79,9 @@
     </head>
     
     <body ng-controller="mainCtrl">        
-        <!-- The prefix "nc" stands for "nano container"-->
         <div id="nc-navbar" class="navbar-fixed-top"></div>
         <div class="container page">
             <div id="nc-market-summary" ng-controller="marketSummaryCtrl">
-                <!--div ng-view></div-->
                 <x-market-summary-dir></x-market-summary-dir>
             </div>
             <div class="row">
@@ -97,7 +93,7 @@
                 <div id="nc-account-summary" class="span6"></div>
                 <div id="nc-user-statistics" class="span6"></div>
             </div>
-            <div id="nc-loading">
+            <div id="nc-loading" ng-show="showLoading">
                 <div class="logo brand"></div> 
                 <div class="loading"></div>
             </div>
@@ -108,9 +104,7 @@
                 <div id="nc-help"></div>
                 <div id="nc-admin"></div>
             </div>
-            <div id="nc-login">
-                <x-login-dir></x-login-dir>
-            </div>
+            <x-login-dir ng-show="showLogin"></x-login-dir>
             <div id="nc-registration"></div>
             <div id="nc-contact" ></div>
             <div id="nc-quotes" class="row"></div>
