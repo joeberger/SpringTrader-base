@@ -10,11 +10,11 @@ var appTrader = angular.module('appTrader', ['ngResource'])
 .config(function ($routeProvider, $locationProvider) {
     // Set up our routes
     $routeProvider
-      .when('/', {
+/*      .when('/', {
         controller: 'marketSummaryCtrl',
         templateUrl: app.conf.tpls.marketSummary
       })
-/*     
+     
       .when('/dashboard', {
         controller: 'DashboardCtrl'//,
         //templateUrl: 'templates/dashboard.html'
@@ -55,9 +55,19 @@ var appTrader = angular.module('appTrader', ['ngResource'])
 */
 
   // Controllers
+  .controller('mainCtrl', function ($scope, $resource) {
+    $scope.strings = app.strings;
+  })
   .controller('marketSummaryCtrl', function ($scope, $resource, marketSummary) {
     $scope.marketSummary = marketSummary.get();
-    console.log($scope.marketSummary);
+  })
+  .directive('marketSummaryDir', function(){
+    return {
+      restrict: 'E',
+      // This HTML will replace the market summary directive.
+      replace: true,
+      templateUrl: app.conf.tpls.marketSummary      
+    }
   })
 /*
   .controller('DashboardCtrl', function ($scope, $resource) {})
@@ -93,3 +103,4 @@ var appTrader = angular.module('appTrader', ['ngResource'])
     };
   });
 */
+;

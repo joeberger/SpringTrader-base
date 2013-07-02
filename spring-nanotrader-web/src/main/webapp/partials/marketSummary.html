@@ -2,7 +2,7 @@
     <div class="span4">
         <table class="table">
             <tr>
-                <th colspan="3"><span class="icon-custom icon-gains"></span>Day's Gains</th>
+                <th colspan="3"><span class="icon-custom icon-gains"></span>{{strings.daysGains}}</th>
             </tr>
             <tr class="caps">
                 <td id="ms-tg-sym-{{i}}" title="" ng-repeat="i in marketSummary.topGainers">{{i.symbol}}</td>
@@ -41,7 +41,7 @@
     <div class="span4">
         <table class="table">
             <tr>
-                <th colspan="3"><span class="icon-custom icon-lost"></span>Day's Losses</th>
+                <th colspan="3"><span class="icon-custom icon-lost"></span>{{strings.daysLosses}}</th>
             </tr>
             <tr class="caps">
                 <td id="ms-tl-sym-{{i}}" title="" ng-repeat="i in marketSummary.topLosers">{{i.symbol}}</td>

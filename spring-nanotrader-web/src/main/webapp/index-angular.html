@@ -80,12 +80,13 @@
         <link rel="shortcut icon" href="ico/favicon.ico">
     </head>
     
-    <body>        
+    <body ng-controller="mainCtrl">        
         <!-- The prefix "nc" stands for "nano container"-->
         <div id="nc-navbar" class="navbar-fixed-top"></div>
         <div class="container page">
             <div id="nc-market-summary" ng-controller="marketSummaryCtrl">
-                <div ng-view></div>
+                <!--div ng-view></div-->
+                <x-market-summary-dir></x-market-summary-dir>
             </div>
             <div class="row">
                 <div id="nc-portfolio-summary" class="span6"></div>
@@ -107,7 +108,9 @@
                 <div id="nc-help"></div>
                 <div id="nc-admin"></div>
             </div>
-            <div id="nc-login"></div>
+            <div id="nc-login">
+                <x-login-dir></x-login-dir>
+            </div>
             <div id="nc-registration"></div>
             <div id="nc-contact" ></div>
             <div id="nc-quotes" class="row"></div>
