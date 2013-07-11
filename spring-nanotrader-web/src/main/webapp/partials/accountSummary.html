@@ -1,21 +1,21 @@
 <div class="well show-well">
-    <div class="title"><h3>{{accountSummary}}</h3></div>
+    <div class="title"><h3>{{strings.accountSummary}}</h3></div>
     <div class="table-outer">
         <table class="table">
             <tr>
-                <td>{{currentBalance}}</td>
+                <td>{{strings.currentBalance}}</td>
                 <td class="gray-background">{{balance + totalMarketValue | currency}}</td>
             </tr>
             <tr>
-                <td>{{openingBalance}}</td>
+                <td>{{strings.openingBalance}}</td>
                 <td class="gray-background">{{openbalance | currency}}</td>
             </tr>
             <tr>
-                <td>{{cashBalance}}</td>
+                <td>{{strings.cashBalance}}</td>
                 <td class="gray-background">{{balance | currency}}</td>
             </tr>
             <tr>
-                <td>{{holdingsTotal}}</td>
+                <td>{{strings.holdingsTotal}}</td>
                 <td class="gray-background">{{round(totalMarketValue) | currency}}</td>
             </tr>
             <tr class="summary "+({{gain}} > 0 ? nano.conf.successCss : nano.conf.errorCss )>

@@ -2,17 +2,35 @@
  * Module, controllers, directives and factories for Spring Trader app
  * @author Joe Berger
  */
-
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var appTrader = angular.module('appTrader', ['ngResource', 'ngCookies'])
-.config(function ($routeProvider, $locationProvider) {
+var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
+.config(function ($routeProvider, $locationProvider, $httpProvider) {
     // Set up our routes
     $routeProvider
-/*      .when('/login',{
-        controller: 'LoginCtrl'
+      .when('/logout', {
+        controller: 'LogoutCtrl',
+        template: " "
       })
+      .when('/', {
+        controller: 'MainCtrl',
+        template: " "
+      })
+      .when('/dashboard', {
+        controller: 'DashboardCtrl',
+        templateUrl: app.conf.tpls.accountSummaryTest
+      })
+/*
+      .when("/logout", {resolve: {redirect: 'LogoutCtrl'}})
+      .when('/', {
+          resolve: {
+              redirect: function ($route, $location) {
+                  debugger;
+              }
+            }
+      })
+
       .when('/', {
         controller: 'marketSummaryCtrl',
         templateUrl: app.conf.tpls.marketSummary
@@ -30,16 +48,18 @@ var appTrader = angular.module('appTrader', ['ngResource', 'ngCookies'])
         controller: 'TradeCtrl',
         templateUrl: 'templates/trade.html'
       })
-      .otherwise({redirectTo: '/dashboard'});
+
+      .otherwise({redirectTo: '/'});
 */
     // Use HTML5 mode (History API) when changing URL
     $locationProvider.html5Mode(true);
+    $httpProvider.defaults.withCredentials = true;
   })
 
 
   // Setup Factories that can be requested by any other
   // part of the module, and then injected by Angular
-  .factory('marketSummary', function ($resource) {
+  .factory('MarketSummary', function ($resource) {
     return $resource(app.conf.urls.marketSummary, {
      // query: {method:'GET', isArray:true}
     });
@@ -58,40 +78,62 @@ var appTrader = angular.module('appTrader', ['ngResource', 'ngCookies'])
 */
 
   // Controllers
-  .controller('mainCtrl', function ($scope, $cookieStore) {
+  .controller('MainCtrl', ['$scope', function ($scope) {
     $scope.strings = app.strings; // load i18n strings into scope
-
     // Check if the user is logged in
-    var userSession = $cookieStore.get(app.conf.sessionCookieName);
-
+    var userSession = $.cookie(app.conf.sessionCookieName);
     if (!userSession){
       // Show login form
       $scope.showLoading = false;
-      $scope.showLogin = true;
-      
+      $scope.showLogin = true;      
     }
+  }])
+  .controller('LogoutCtrl', function ($scope, $rootScope, $http, $location) {
+    var sessCookie = $.cookie(app.conf.sessionCookieName);
+    var u_headers = {
+        "Content-Type" : "application/json"
+    };
+    // Add the authentication token to if if logged in
+    if (sessCookie)
+    {
+      u_headers.API_TOKEN = angular.fromJson(sessCookie).authToken;
+    }
+    $http.get(app.conf.urls.logout, {headers: u_headers})
+        .success(function(data, status, headers, config) {
+          $rootScope.showLogin = true;
+          // reset the session cookie
+          $.cookie(app.conf.sessionCookieName, null)
+          $location.path('/').replace();
+        })
+        .error(function(data, status, headers, config) {
+          debugger;
+          $scope.loginError = status;
+        });    
   })
   .controller('LoginCtrl', function($scope, $http, $routeParams, $location, $filter){
     $scope.logMeIn = function() {
       $http.post(app.conf.urls.login, $filter('json')({username : $scope.username, password : $scope.password}))
         .success(function(data, status, headers, config) {
-          $scope.showLogin = false;
-
-          debugger;
-          // this callback will be called asynchronously
-          // when the response is available
+          //Store the session info in the cookie.
+          var info = {
+              username : $scope.username,
+              accountid : data.accountid,
+              profileid : data.profileid,
+              authToken : data.authToken
+          };
+          $.cookie(app.conf.sessionCookieName, $filter('json')(info))
+          //$rootScope.showLogin = false;
         })
         .error(function(data, status, headers, config) {
           debugger;
-          // called asynchronously if an error occurs
-          // or server returns response with an error status.
+          $scope.loginError = data.detail;
         });
     }
-
   })
-  .controller('marketSummaryCtrl', function ($scope, $resource, marketSummary) {
-    $scope.marketSummary = marketSummary.get();
+  .controller('MarketSummaryCtrl', function ($scope, $resource, MarketSummary) {
+    $scope.marketSummary = MarketSummary.get();
   })
+  .controller('DashboardCtrl', function ($scope, $resource) {})
 
   // Directives
   .directive('marketSummaryDir', function(){
@@ -110,8 +152,10 @@ var appTrader = angular.module('appTrader', ['ngResource', 'ngCookies'])
       templateUrl: app.conf.tpls.login      
     }
   })
+
+
 /*
-  .controller('DashboardCtrl', function ($scope, $resource) {})
+  
   .controller('PortfolioCtrl', function ($scope, $resource, portfolioSummary) {});
 
   .controller('TradeCtrl', function ($scope, $resource, $routeParams, Contact, $timeout, $location) {
@@ -145,3 +189,5 @@ var appTrader = angular.module('appTrader', ['ngResource', 'ngCookies'])
   });
 */
 ;
+
+//appTrader.run(function($route){});
