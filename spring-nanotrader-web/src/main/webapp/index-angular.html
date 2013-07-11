@@ -66,7 +66,7 @@
 -->
         <script src="js/angular.min.js"></script>
         <script src="js/angular-resource.min.js"></script>
-        <script src="js/angular-cookies.min.js"></script>
+        <!--script src="js/angular-cookies.min.js"></script-->
         
         <script src="js/bootstrap.min.js"></script>
 
@@ -106,7 +106,9 @@
                 <div id="nc-help"></div>
                 <div id="nc-admin"></div>
             </div>
-            <x-login-dir ng-show="showLogin"></x-login-dir>
+            <div ng-controller="LoginCtrl" ng-show="showLogin">
+                <x-login-dir></x-login-dir>
+            </div>
             <div id="nc-registration"></div>
             <div id="nc-contact" ></div>
             <div id="nc-quotes" class="row"></div>

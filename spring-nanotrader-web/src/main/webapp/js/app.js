@@ -81,14 +81,19 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
   .controller('MainCtrl', ['$scope', function ($scope) {
     $scope.strings = app.strings; // load i18n strings into scope
     // Check if the user is logged in
+    debugger;
     var userSession = $.cookie(app.conf.sessionCookieName);
     if (!userSession){
       // Show login form
       $scope.showLoading = false;
       $scope.showLogin = true;      
     }
+    else{
+      $scope.showLoading = false;
+      $scope.showLogin = false; 
+    }
   }])
-  .controller('LogoutCtrl', function ($scope, $rootScope, $http, $location) {
+  .controller('LogoutCtrl', function ($scope, $rootScope, $http, $location, $route) {
     var sessCookie = $.cookie(app.conf.sessionCookieName);
     var u_headers = {
         "Content-Type" : "application/json"
@@ -98,19 +103,13 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
     {
       u_headers.API_TOKEN = angular.fromJson(sessCookie).authToken;
     }
-    $http.get(app.conf.urls.logout, {headers: u_headers})
-        .success(function(data, status, headers, config) {
-          $rootScope.showLogin = true;
-          // reset the session cookie
-          $.cookie(app.conf.sessionCookieName, null)
-          $location.path('/').replace();
-        })
-        .error(function(data, status, headers, config) {
-          debugger;
-          $scope.loginError = status;
-        });    
+    $http.get(app.conf.urls.logout, {headers: u_headers});   
+    
+    $.cookie(app.conf.sessionCookieName, null);  
+    $location.path('/').replace();
+    $route.reload();      
   })
-  .controller('LoginCtrl', function($scope, $http, $routeParams, $location, $filter){
+  .controller('LoginCtrl', function($scope, $rootScope, $http, $routeParams, $location, $filter){
     $scope.logMeIn = function() {
       $http.post(app.conf.urls.login, $filter('json')({username : $scope.username, password : $scope.password}))
         .success(function(data, status, headers, config) {
@@ -122,7 +121,7 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
               authToken : data.authToken
           };
           $.cookie(app.conf.sessionCookieName, $filter('json')(info))
-          //$rootScope.showLogin = false;
+          $scope.showLogin = false;
         })
         .error(function(data, status, headers, config) {
           debugger;
