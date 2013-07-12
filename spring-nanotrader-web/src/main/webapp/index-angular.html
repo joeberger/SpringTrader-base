@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>SpringTrader :: Dashboard</title>
 
-        <base href="/spring-nanotrader-web/index-angular.html">
+        <base href="/spring-nanotrader-web/">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="">
@@ -80,40 +80,49 @@
     
     <body ng-controller="MainCtrl">  
     <div ng-view></div>  
-    <a href="logout"> LOGOUT </a>    
+    
+<!-- Temporary logout link -->
+    <a href="logout"> LOGOUT </a>  
+
         <div id="nc-navbar" class="navbar-fixed-top"></div>
         <div class="container page">
             <div id="nc-market-summary" ng-controller="MarketSummaryCtrl">
                 <x-market-summary-dir></x-market-summary-dir>
-            </div>          
-            <div class="row">
-                <div id="nc-portfolio-summary" class="span6"></div>
-                <div id="nc-portfolio" class="span6"></div>
-                <div id="nc-positions" class="span6"></div>
-            </div>
-            <div class="row">
-                <div id="nc-account-summary" class="span6"></div>
-                <div id="nc-user-statistics" class="span6"></div>
-            </div>
+            </div>   
             <div id="nc-loading" ng-show="showLoading">
                 <div class="logo brand"></div> 
                 <div class="loading"></div>
-            </div>
-            <div class="row">
-                <div id="nc-leftnavbar"></div>
-                <div id="nc-profile"></div>
-                <div id="nc-overview"></div>
-                <div id="nc-help"></div>
-                <div id="nc-admin"></div>
-            </div>
+            </div> 
+            <div ng-hide="showLogin">     
+                <div class="row">
+                    <div id="nc-portfolio-summary" class="span6"></div>
+                    <div id="nc-portfolio" class="span6"></div>
+                    <div id="nc-positions" class="span6"></div>
+                </div>
+                <div class="row">
+                    <div id="nc-account-summary" class="span6" ng-controller="AccountSummaryCtrl">
+                        <x-account-summary-dir></x-account-summary-dir>
+                    </div>
+                    <div id="nc-user-statistics" class="span6"></div>
+                </div>
+                
+                <div class="row">
+                    <div id="nc-leftnavbar"></div>
+                    <div id="nc-profile"></div>
+                    <div id="nc-overview"></div>
+                    <div id="nc-help"></div>
+                    <div id="nc-admin"></div>
+                </div>
+                
+                <div id="nc-registration"></div>
+                <div id="nc-contact" ></div>
+                <div id="nc-quotes" class="row"></div>
+                <div id="nc-holdings" class="row"></div>
+                <div id="nc-orders" class="row"></div> 
+            </div> 
             <div ng-controller="LoginCtrl" ng-show="showLogin">
                 <x-login-dir></x-login-dir>
-            </div>
-            <div id="nc-registration"></div>
-            <div id="nc-contact" ></div>
-            <div id="nc-quotes" class="row"></div>
-            <div id="nc-holdings" class="row"></div>
-            <div id="nc-orders" class="row"></div>   
+            </div>  
         </div>
         <!--div id="nc-footer"></div-->
     </body>

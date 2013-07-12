@@ -5,7 +5,7 @@
                 <h3>{{strings.login}}<span>{{strings.enterUsername}}</span></h3>
                 <div id="login-error" class="span8 alert alert-block alert-error fade in" ng-show="loginError">
                     <a data-dismiss="alert" class="close">x</a>
-                    <h4 class="alert-heading">{{strings.ohSnap}}</h4>
+                    <h4 class="alert-heading">{{strings.errorOcurred}}</h4>
                     <p>{{loginError}}</p>
                 </div>
                 <div class="row">
@@ -28,7 +28,6 @@
                 </div>
                 <div class="row">
                     <div class="form-actions offset4 span4">
-                        <!--<button id="loginBtn" class="btn green-btn">{{strings.login}}</button>-->
                         <input type="submit" class="btn green-btn" name={{strings.login}} />
                     </div>
                 </div>

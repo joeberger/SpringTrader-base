@@ -4,22 +4,22 @@
         <table class="table">
             <tr>
                 <td>{{strings.currentBalance}}</td>
-                <td class="gray-background">{{balance + totalMarketValue | currency}}</td>
+                <td class="gray-background">{{account.balance + account.totalMarketValue | currency}}</td>
             </tr>
             <tr>
                 <td>{{strings.openingBalance}}</td>
-                <td class="gray-background">{{openbalance | currency}}</td>
+                <td class="gray-background">{{account.openbalance | currency}}</td>
             </tr>
             <tr>
                 <td>{{strings.cashBalance}}</td>
-                <td class="gray-background">{{balance | currency}}</td>
+                <td class="gray-background">{{account.balance | currency}}</td>
             </tr>
             <tr>
                 <td>{{strings.holdingsTotal}}</td>
-                <td class="gray-background">{{round(totalMarketValue) | currency}}</td>
+                <td class="gray-background">{{totalMarketValue | currency}}</td>
             </tr>
-            <tr class="summary "+({{gain}} > 0 ? nano.conf.successCss : nano.conf.errorCss )>
-                <td>{{currentGainLoss}}</td>
+            <tr class="summary">
+                <td>{{strings.currentGainLoss}}</td>
                 <td class="average">{{gain | currency}}</td>
             </tr>
         </table>

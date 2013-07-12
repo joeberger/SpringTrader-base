@@ -3,6 +3,7 @@
  * @author Joe Berger
  */
 app.conf = {
+    baseUrl: '/spring-nanotrader-web/',
     device : 'computer',                            // Device rendering the application (changes to "mobile" depending on the user agent)
     sessionCookieName : 'appTraderSession',        // Name of the Cookie that will store the session info in the browser
     urlRoot : '/spring-nanotrader-services/api/',   // Path to the API service
@@ -27,7 +28,7 @@ app.conf = {
 app.conf.urls = {
     logout : app.conf.urlRoot + 'logout',
     login : app.conf.urlRoot + 'login',
-    account : app.conf.urlRoot + 'account',
+    account : app.conf.urlRoot + 'account/:accountId',
     accountProfile : app.conf.urlRoot + 'accountProfile',
     marketSummary : app.conf.urlRoot + 'marketSummary',
     holdingSummary : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/holdingSummary',

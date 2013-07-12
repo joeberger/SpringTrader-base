@@ -30,16 +30,6 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
               }
             }
       })
-
-      .when('/', {
-        controller: 'marketSummaryCtrl',
-        templateUrl: app.conf.tpls.marketSummary
-      })
-     
-      .when('/dashboard', {
-        controller: 'DashboardCtrl'//,
-        //templateUrl: 'templates/dashboard.html'
-      })
       .when('/portfolio', {
         controller: 'PortfolioCtrl',
         templateUrl: 'templates/portfolio.html'
@@ -53,7 +43,7 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
 */
     // Use HTML5 mode (History API) when changing URL
     $locationProvider.html5Mode(true);
-    $httpProvider.defaults.withCredentials = true;
+    //$httpProvider.defaults.withCredentials = true;
   })
 
 
@@ -64,6 +54,9 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
      // query: {method:'GET', isArray:true}
     });
   })
+  .factory('Account', function ($resource) {
+    return $resource(app.conf.urls.account, {});
+  })
 /*
   .factory('accountProfile', function ($resource) {
     //return $resource('/api/contact/:name', { name: '@name.clean' });
@@ -72,16 +65,12 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
   .factory('holdingSummary', function ($resource) {
     return $resource('/spring-nanotrader-services/api/holdingSummary', {});
   })
-  .factory('portfolioSummary', function ($resource) {
-    return $resource('/spring-nanotrader-services/api/portfolioSummary', {});
-  })
 */
 
   // Controllers
-  .controller('MainCtrl', ['$scope', function ($scope) {
+  .controller('MainCtrl', function ($scope, $http) {
     $scope.strings = app.strings; // load i18n strings into scope
     // Check if the user is logged in
-    debugger;
     var userSession = $.cookie(app.conf.sessionCookieName);
     if (!userSession){
       // Show login form
@@ -89,25 +78,28 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
       $scope.showLogin = true;      
     }
     else{
+      // set http common headers:
+      $http.defaults.headers.common['API_TOKEN'] = angular.fromJson(userSession).authToken;
+
       $scope.showLoading = false;
       $scope.showLogin = false; 
     }
-  }])
-  .controller('LogoutCtrl', function ($scope, $rootScope, $http, $location, $route) {
+  })
+  .controller('LogoutCtrl', function ($http) {
+/*    
     var sessCookie = $.cookie(app.conf.sessionCookieName);
     var u_headers = {
         "Content-Type" : "application/json"
     };
-    // Add the authentication token to if if logged in
     if (sessCookie)
     {
       u_headers.API_TOKEN = angular.fromJson(sessCookie).authToken;
     }
-    $http.get(app.conf.urls.logout, {headers: u_headers});   
-    
-    $.cookie(app.conf.sessionCookieName, null);  
-    $location.path('/').replace();
-    $route.reload();      
+*/    
+    $http.get(app.conf.urls.logout); //, {headers: u_headers});   
+    // Remove the session object
+    $.cookie(app.conf.sessionCookieName, null); 
+    window.location.href = app.conf.baseUrl;   
   })
   .controller('LoginCtrl', function($scope, $rootScope, $http, $routeParams, $location, $filter){
     $scope.logMeIn = function() {
@@ -121,7 +113,8 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
               authToken : data.authToken
           };
           $.cookie(app.conf.sessionCookieName, $filter('json')(info))
-          $scope.showLogin = false;
+          //$rootScope.showLogin = false;
+          window.location.href = app.conf.baseUrl;
         })
         .error(function(data, status, headers, config) {
           debugger;
@@ -131,6 +124,16 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
   })
   .controller('MarketSummaryCtrl', function ($scope, $resource, MarketSummary) {
     $scope.marketSummary = MarketSummary.get();
+  })
+  .controller('AccountSummaryCtrl', function ($scope, $resource, Account) {
+    if ($.cookie(app.conf.sessionCookieName)){
+      var accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
+      $scope.account = Account.get({accountId: accountID});
+      $scope.totalMarketValue = 99;
+      $scope.gain = 0;
+      //inject math object into scope:
+      //$scope.Math = window.Math;
+    }
   })
   .controller('DashboardCtrl', function ($scope, $resource) {})
 
@@ -143,6 +146,14 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
       templateUrl: app.conf.tpls.marketSummary      
     }
   })
+  .directive('accountSummaryDir', function(){
+    return {
+      restrict: 'E',
+      // This HTML from template will replace the account summary directive.
+      replace: true,
+      templateUrl: app.conf.tpls.accountSummary      
+    }
+  })
   .directive('loginDir', function(){
     return {
       restrict: 'E',
@@ -150,7 +161,7 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
       replace: true,
       templateUrl: app.conf.tpls.login      
     }
-  })
+  });
 
 
 /*
@@ -187,6 +198,5 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
     };
   });
 */
-;
 
 //appTrader.run(function($route){});
