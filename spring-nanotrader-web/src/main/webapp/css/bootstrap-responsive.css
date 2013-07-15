@@ -116,6 +116,13 @@
   .navbar-fixed-bottom .container {
     width: 1170px;
   }
+  .span14 {
+    width: 99%;
+    margin-left: 0px;
+  }
+  .span13 {
+    width: 47%;
+  }
   .span12 {
     width: 1170px;
   }

@@ -57,6 +57,9 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
   .factory('Account', function ($resource) {
     return $resource(app.conf.urls.account, {});
   })
+  .factory('Orders', function ($resource) {
+    return $resource(app.conf.urls.orders, {});
+  })
 /*
   .factory('accountProfile', function ($resource) {
     //return $resource('/api/contact/:name', { name: '@name.clean' });
@@ -135,6 +138,12 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
       //$scope.Math = window.Math;
     }
   })
+  .controller('OrdersCtrl', function ($scope, $resource, Orders) {
+    if ($.cookie(app.conf.sessionCookieName)){
+      var accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
+      $scope.orders = Orders.get({accountId: accountID});
+    }
+  })
   .controller('DashboardCtrl', function ($scope, $resource) {})
 
   // Directives
@@ -146,12 +155,28 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
       templateUrl: app.conf.tpls.marketSummary      
     }
   })
+  .directive('ordersDir', function(){
+    return {
+      restrict: 'E',
+      // This HTML from template will replace the orders directive.
+      replace: true,
+      templateUrl: app.conf.tpls.orders      
+    }
+  })
   .directive('accountSummaryDir', function(){
     return {
       restrict: 'E',
       // This HTML from template will replace the account summary directive.
       replace: true,
       templateUrl: app.conf.tpls.accountSummary      
+    }
+  })
+  .directive('userStatsDir', function(){
+    return {
+      restrict: 'E',
+      // This HTML from template will replace the account summary directive.
+      replace: true,
+      templateUrl: app.conf.tpls.userStatistics      
     }
   })
   .directive('loginDir', function(){

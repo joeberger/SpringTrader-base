@@ -465,16 +465,16 @@ table tbody tr.summary td,
 .average {
     font:bold 18px/20px Arial, sans-serif;
 }
-.span12 .table-bordered {
+.span14 .table-bordered {
     border:0;	
 }
-.span12 .table-bordered td, .span12 .table-bordered th{ 
+.span14 .table-bordered td, .span14 .table-bordered th{ 
     text-align:center;
 }
-.span12 .table-bordered th:first-child, .span12 .table-bordered td:first-child {
+.span14 .table-bordered th:first-child, .span14 .table-bordered td:first-child {
     border-left:0;
 }
-.span12 .table-bordered  tbody tr th {
+.span14 .table-bordered  tbody tr th {
     background:none;
     border:0;
     color:#000000;

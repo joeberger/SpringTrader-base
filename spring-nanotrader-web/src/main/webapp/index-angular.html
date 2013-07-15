@@ -80,7 +80,7 @@
     
     <body ng-controller="MainCtrl">  
     <div ng-view></div>  
-    
+
 <!-- Temporary logout link -->
     <a href="logout"> LOGOUT </a>  
 
@@ -99,11 +99,12 @@
                     <div id="nc-portfolio" class="span6"></div>
                     <div id="nc-positions" class="span6"></div>
                 </div>
-                <div class="row">
-                    <div id="nc-account-summary" class="span6" ng-controller="AccountSummaryCtrl">
+                <div class="row" ng-controller="AccountSummaryCtrl">
+                    <!--div id="nc-account-summary" -->
                         <x-account-summary-dir></x-account-summary-dir>
-                    </div>
-                    <div id="nc-user-statistics" class="span6"></div>
+                        <x-user-stats-dir></x-user-stats-dir>
+                    <!--/div-->
+                    <!--div id="nc-user-statistics" class="span6"></div-->
                 </div>
                 
                 <div class="row">
@@ -118,7 +119,10 @@
                 <div id="nc-contact" ></div>
                 <div id="nc-quotes" class="row"></div>
                 <div id="nc-holdings" class="row"></div>
-                <div id="nc-orders" class="row"></div> 
+                    
+                <x-orders-dir ng-controller="OrdersCtrl"></x-orders-dir>
+                
+                <!--div id="nc-orders" class="row"></div--> 
             </div> 
             <div ng-controller="LoginCtrl" ng-show="showLogin">
                 <x-login-dir></x-login-dir>

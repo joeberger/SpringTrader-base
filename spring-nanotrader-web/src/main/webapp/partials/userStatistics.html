@@ -1,22 +1,22 @@
-<div class="well show-well">
-    <div class="title"><h3><%= translate("userStatistics") %></h3></div>
+<div class="span13 well show-well">
+    <div class="title"><h3>{{strings.userStatistics}}</h3></div>
     <div class="table-outer">
         <table class="table">
             <tr>
-                <td><%= translate("accountId") %></td>
-                <td><%= accountid %></td>
+                <td>{{strings.accountId}}</td>
+                <td>{{account.accountid}}</td>
             </tr>
             <tr>
-                <td><%= translate("accountCreationDate") %></td>
-                <td><%= creationdate %></td>
+                <td>{{strings.accountCreationDate}}</td>
+                <td>{{account.creationdate}}</td>
             </tr>
             <tr>
-                <td><%= translate("totalLogins") %></td>
-                <td><%= logincount %></td>
+                <td>{{strings.totalLogins}}</td>
+                <td>{{account.logincount}}</td>
             </tr>
             <tr>
-                <td><%= translate("sessionCreationDate") %></td>
-                <td><%= lastlogin %></td>
+                <td>{{strings.sessionCreationDate}}</td>
+                <td>{{account.lastlogin}}</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>

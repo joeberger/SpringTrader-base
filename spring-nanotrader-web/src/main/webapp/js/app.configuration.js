@@ -35,7 +35,7 @@ app.conf.urls = {
     portfolioSummary : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/portfolioSummary',
     holdings : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/holdings',
     sellHolding : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/order/asynch',
-    orders : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/orders', 
+    orders : app.conf.urlRoot + 'account/:accountId/orders', 
     order : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/order/asynch',
     quote : app.conf.urlRoot + 'quote',
     quotes : app.conf.urlRoot + 'quotes',
