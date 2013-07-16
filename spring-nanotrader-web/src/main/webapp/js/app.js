@@ -60,6 +60,9 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
   .factory('Orders', function ($resource) {
     return $resource(app.conf.urls.orders, {});
   })
+  .factory('Portfolio', function ($resource) {
+    return $resource(app.conf.urls.portfolioSummary, {});
+  })
 /*
   .factory('accountProfile', function ($resource) {
     //return $resource('/api/contact/:name', { name: '@name.clean' });
@@ -145,7 +148,12 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
     }
   })
   .controller('DashboardCtrl', function ($scope, $resource) {})
-
+  .controller('PortfolioCtrl', function ($scope, $resource, Portfolio) {
+    if ($.cookie(app.conf.sessionCookieName)){
+      var accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
+      $scope.portfolio = Portfolio.get({accountId: accountID});
+    }    
+  })
   // Directives
   .directive('marketSummaryDir', function(){
     return {
@@ -185,6 +193,14 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
       // This HTML from template will replace the market summary directive.
       replace: true,
       templateUrl: app.conf.tpls.login      
+    }
+  })
+  .directive('navbarDir', function(){
+    return {
+      restrict: 'E',
+      // This HTML from template will replace the market summary directive.
+      replace: true,
+      templateUrl: app.conf.tpls.navbar      
     }
   });
 

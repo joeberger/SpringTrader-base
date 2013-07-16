@@ -32,7 +32,7 @@ app.conf.urls = {
     accountProfile : app.conf.urlRoot + 'accountProfile',
     marketSummary : app.conf.urlRoot + 'marketSummary',
     holdingSummary : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/holdingSummary',
-    portfolioSummary : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/portfolioSummary',
+    portfolioSummary : app.conf.urlRoot + 'account/:accountId/portfolioSummary',
     holdings : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/holdings',
     sellHolding : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/order/asynch',
     orders : app.conf.urlRoot + 'account/:accountId/orders', 
@@ -52,7 +52,6 @@ app.conf.tpls = {
     holdingModal : app.conf.tplRoot + 'holdingModal.html',
     marketSummary : app.conf.tplRoot + 'marketSummary.html',
     portfolioSummary : app.conf.tplRoot + 'portfolioSummary.html',
-    navbar_login : app.conf.tplRoot + 'navbar.login.html',
     navbar : app.conf.tplRoot + 'navbar.html',
     accountSummary : app.conf.tplRoot + 'accountSummary.html',
     footer : app.conf.tplRoot + 'footer.html',
@@ -82,19 +81,17 @@ app.conf.tpls = {
  * Hash tags to use on the code for the different application routes 
  * @author Joe Berger
  */
-app.conf.hash = {
-    login  : '#login',
-    dashboard : '#dashboard',
-    dashboardWithPage : '#dashboard/p{page}',
-    portfolio : '#portfolio',
-    portfolioWithPage : '#portfolio/p{page}',
-    trade : '#trade',
-    tradeWithPage : '#trade/p{page}',
-    tradeWithQuote : '#trade/q{quote}',
-    registration : '#registration',
-    profile : '#profile',
-    contact : '#contact',
-    help : '#help',
-    overview : '#overview',
-    admin : '#admin'
+app.conf.links = {
+    logout  : '/logout',
+    login  : 'login',
+    dashboard : 'dashboard',
+    portfolio : 'portfolio',
+    trade : 'trade',
+    tradeWithQuote : 'trade/:quote',
+    registration : 'registration',
+    profile : 'profile',
+    contact : 'contact',
+    help : 'help',
+    overview : 'overview',
+    admin : 'admin'
 };
