@@ -47,28 +47,35 @@
     </head>
     
     <body ng-controller="MainCtrl">  
+        <!-- Need ng-view to properly load templates -->
         <div ng-view></div>  
-
-    <!-- Temporary logout link -->
-        <a href="logout"> LOGOUT </a>  
-    
+        <!-- Header bar -->
         <x-navbar-dir></x-navbar-dir>
 
-        <!--/div-->
         <div class="container page">
-            <div id="nc-market-summary" ng-controller="MarketSummaryCtrl">
+            <!-- Market Summary Widget -->
+            <div ng-controller="MarketSummaryCtrl">
                 <x-market-summary-dir></x-market-summary-dir>
-            </div>   
+            </div>  
+            <!-- Loading indicator --> 
             <div id="nc-loading" ng-show="showLoading">
                 <div class="logo brand"></div> 
                 <div class="loading"></div>
             </div> 
-            <div ng-hide="showLogin">     
-                <!--div class="row" ng-controller="PortfolioCtrl"-->
+            <!-- if user is logged in show the rest of the widgets -->
+            <div ng-hide="showLogin">   
+                <!-- Portfolio Widgets -->
+                <div class="row" ng-controller="PortfolioCtrl">
                     <div id="nc-portfolio-summary" class="span6"></div>
-                    <div id="nc-portfolio" class="span6"></div>
+                    <div class="span6 well show-well">
+                        <div class="title"><h3>{{strings.assetDistribution}}</h3>
+                            <a class="tooltip-question" title="{{strings.portfolioMsg}}"></a>
+                        </div>
+                        <div id="ad-pie-chart" class="jqplot-target"></div>
+                    </div>
                     <div id="nc-positions" class="span6"></div>
-                <!--/div-->
+                </div>
+                <!-- Account Summary Widgets -->
                 <div class="row" ng-controller="AccountSummaryCtrl">
                     <x-account-summary-dir></x-account-summary-dir>
                     <x-user-stats-dir></x-user-stats-dir>

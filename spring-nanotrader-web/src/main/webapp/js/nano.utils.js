@@ -307,6 +307,8 @@ nano.utils.renderPieChart = function (htmlId, data) {
     }
     
     if (!error) {
+        debugger;
+
         // Options: http://www.jqplot.com/docs/files/jqPlotOptions-txt.html
         var plot = $.jqplot(htmlId, [data], {
             /**
