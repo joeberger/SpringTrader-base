@@ -31,7 +31,7 @@ app.conf.urls = {
     account : app.conf.urlRoot + 'account/:accountId',
     accountProfile : app.conf.urlRoot + 'accountProfile',
     marketSummary : app.conf.urlRoot + 'marketSummary',
-    holdingSummary : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/holdingSummary',
+    holdingSummary : app.conf.urlRoot + 'account/:accountId/holdingSummary',
     portfolioSummary : app.conf.urlRoot + 'account/:accountId/portfolioSummary',
     holdings : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/holdings',
     sellHolding : app.conf.urlRoot + 'account/' + app.conf.accountIdUrlKey + '/order/asynch',

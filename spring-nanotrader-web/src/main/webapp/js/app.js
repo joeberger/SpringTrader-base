@@ -150,17 +150,19 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
   .controller('DashboardCtrl', function ($scope, $resource) {})
   
   .controller('PortfolioCtrl', function ($scope, $resource, Account, Portfolio) {
-    var accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
-    $scope.account = Account.get({accountId: accountID}, function(account) {
-        $scope.account.cashBalance = account.balance;
-        $scope.portfolio = Portfolio.get({accountId: accountID}, function(portfolio) {
-            $scope.portfolio.totalMarketValue = portfolio.totalMarketValue;
-            var totalAssets = $scope.portfolio.totalMarketValue + $scope.account.cashBalance,
-            data = [[app.strings.cashBalance, ($scope.account.cashBalance / totalAssets)],
-                [app.strings.portfolioValue, ($scope.portfolio.totalMarketValue / totalAssets)]];
-            app.utils.renderPieChart('ad-pie-chart', data);
-        });      
-      });
+    if ($.cookie(app.conf.sessionCookieName)){
+      var accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
+      $scope.account = Account.get({accountId: accountID}, function(account) {
+          $scope.account.cashBalance = account.balance;
+          $scope.portfolio = Portfolio.get({accountId: accountID}, function(portfolio) {
+              $scope.portfolio.totalMarketValue = portfolio.totalMarketValue;
+              var totalAssets = $scope.portfolio.totalMarketValue + $scope.account.cashBalance,
+              data = [[app.strings.cashBalance, ($scope.account.cashBalance / totalAssets)],
+                  [app.strings.portfolioValue, ($scope.portfolio.totalMarketValue / totalAssets)]];
+              app.utils.renderPieChart('ad-pie-chart', data);
+          });      
+        });
+    }
   })
 
   // Directives
