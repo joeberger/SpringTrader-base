@@ -67,13 +67,22 @@
                 <!-- Portfolio Widgets -->
                 <div class="row" ng-controller="PortfolioCtrl">
                     <div id="nc-portfolio-summary" class="span6"></div>
+
+                    <!-- Asset Distribution pie chart -->
                     <div class="span6 well show-well">
                         <div class="title"><h3>{{strings.assetDistribution}}</h3>
                             <a class="tooltip-question" title="{{strings.portfolioMsg}}"></a>
                         </div>
                         <div id="ad-pie-chart" class="jqplot-target"></div>
                     </div>
-                    <div id="nc-positions" class="span6"></div>
+
+                    <!-- Daily Top Gains pie chart -->
+                    <div class="span6 well show-well">
+                        <div class="title"><h3>{{strings.dailyTopGains}}</h3>
+                            <a class="tooltip-question" title="{{strings.gainingMsg}}"></a>
+                        </div>
+                        <div id="dtg-pie-chart" class="jqplot-target"></div>
+                    </div>
                 </div>
                 <!-- Account Summary Widgets -->
                 <div class="row" ng-controller="AccountSummaryCtrl">
