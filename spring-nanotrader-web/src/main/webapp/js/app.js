@@ -46,7 +46,6 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
     //$httpProvider.defaults.withCredentials = true;
   })
 
-
   // Setup Factories that can be requested by any other
   // part of the module, and then injected by Angular
   .factory('MarketSummary', function ($resource) {
@@ -63,45 +62,31 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
   .factory('Portfolio', function ($resource) {
     return $resource(app.conf.urls.portfolioSummary, {});
   })
-/*
-  .factory('accountProfile', function ($resource) {
-    //return $resource('/api/contact/:name', { name: '@name.clean' });
-    return $resource('/spring-nanotrader-services/api/accountProfile', {});    
+  .factory('Holdings', function ($resource) {
+    return $resource(app.conf.urls.holdingSummary, {});
   })
-  .factory('holdingSummary', function ($resource) {
-    return $resource('/spring-nanotrader-services/api/holdingSummary', {});
-  })
-*/
 
   // Controllers
   .controller('MainCtrl', function ($scope, $http) {
     $scope.strings = app.strings; // load i18n strings into scope
+
     // Check if the user is logged in
     var userSession = $.cookie(app.conf.sessionCookieName);
-    if (!userSession){
-      // Show login form
-      $scope.showLoading = false;
-      $scope.showLogin = true;      
-    }
-    else{
+    if (userSession){
       // set http common headers:
       $http.defaults.headers.common['API_TOKEN'] = angular.fromJson(userSession).authToken;
-
+      //$scope.accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;  
+      $scope.accountID = angular.fromJson(userSession).accountid; 
       $scope.showLoading = false;
-      $scope.showLogin = false; 
+      $scope.showLogin = false;    
+    }
+    else{
+      // Show login form
+      $scope.showLoading = false;
+      $scope.showLogin = true;   
     }
   })
-  .controller('LogoutCtrl', function ($http) {
-/*    
-    var sessCookie = $.cookie(app.conf.sessionCookieName);
-    var u_headers = {
-        "Content-Type" : "application/json"
-    };
-    if (sessCookie)
-    {
-      u_headers.API_TOKEN = angular.fromJson(sessCookie).authToken;
-    }
-*/    
+  .controller('LogoutCtrl', function ($http) { 
     $http.get(app.conf.urls.logout); //, {headers: u_headers});   
     // Remove the session object
     $.cookie(app.conf.sessionCookieName, null); 
@@ -123,7 +108,6 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
           window.location.href = app.conf.baseUrl;
         })
         .error(function(data, status, headers, config) {
-          debugger;
           $scope.loginError = data.detail;
         });
     }
@@ -132,9 +116,8 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
     $scope.marketSummary = MarketSummary.get();
   })
   .controller('AccountSummaryCtrl', function ($scope, $resource, Account) {
-    if ($.cookie(app.conf.sessionCookieName)){
-      var accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
-      $scope.account = Account.get({accountId: accountID});
+    if ($scope.accountID){
+      $scope.account = Account.get({accountId: $scope.accountID});
       $scope.totalMarketValue = 99;
       $scope.gain = 0;
       //inject math object into scope:
@@ -142,27 +125,46 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
     }
   })
   .controller('OrdersCtrl', function ($scope, $resource, Orders) {
-    if ($.cookie(app.conf.sessionCookieName)){
-      var accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
-      $scope.orders = Orders.get({accountId: accountID});
+    if ($scope.accountID){
+      $scope.orders = Orders.get({accountId: $scope.accountID});
     }
   })
   .controller('DashboardCtrl', function ($scope, $resource) {})
-  
-  .controller('PortfolioCtrl', function ($scope, $resource, Account, Portfolio) {
-    if ($.cookie(app.conf.sessionCookieName)){
-      var accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
-      $scope.account = Account.get({accountId: accountID}, function(account) {
+  .controller('AssetCtrl', function ($scope, $resource, Account, Portfolio) {
+    // data for Asset Distribution
+    if($scope.accountID){
+      $scope.account = Account.get({accountId: $scope.accountID}, function(account) {
           $scope.account.cashBalance = account.balance;
-          $scope.portfolio = Portfolio.get({accountId: accountID}, function(portfolio) {
+          $scope.portfolio = Portfolio.get({accountId: $scope.accountID}, function(portfolio) {
               $scope.portfolio.totalMarketValue = portfolio.totalMarketValue;
+
               var totalAssets = $scope.portfolio.totalMarketValue + $scope.account.cashBalance,
-              data = [[app.strings.cashBalance, ($scope.account.cashBalance / totalAssets)],
+              assetData = [[app.strings.cashBalance, ($scope.account.cashBalance / totalAssets)],
                   [app.strings.portfolioValue, ($scope.portfolio.totalMarketValue / totalAssets)]];
-              app.utils.renderPieChart('ad-pie-chart', data);
+              app.utils.renderPieChart('ad-pie-chart', assetData, $scope); 
           });      
         });
     }
+  })
+  .controller('GainsCtrl', function ($scope, $resource, Holdings) {
+    // data for Daily Top Gains
+    if($scope.accountID){
+      $scope.holdings = Holdings.get({accountId: $scope.accountID}, function(holdings){
+        var i, holdingData = [],
+        holdingRollups = holdings.holdingRollups;
+
+        for (i in holdingRollups) {
+          if (holdingRollups[i].percent != 0){holdingData.push([holdingRollups[i].symbol, holdingRollups[i].percent]);}            
+        }
+        app.utils.renderPieChart('dtg-pie-chart', holdingData, $scope);
+      });
+    }
+  })
+
+  .controller('PortfolioCtrl', function ($scope, $resource) {
+//    if ($.cookie(app.conf.sessionCookieName)){
+//      $scope.accountID = angular.fromJson($.cookie(app.conf.sessionCookieName)).accountid;
+//    }
   })
 
   // Directives
@@ -214,41 +216,5 @@ var appTrader = angular.module('appTrader', ['ngResource'])//, 'ngCookies'])
       templateUrl: app.conf.tpls.navbar      
     }
   });
-
-
-/*
-  
-  .controller('PortfolioCtrl', function ($scope, $resource, portfolioSummary) {});
-
-  .controller('TradeCtrl', function ($scope, $resource, $routeParams, Contact, $timeout, $location) {
-    // Grab just a single contact
-    $scope.contact = Contact.get({ name: $routeParams.name });
-
-    // Throttle the save POST request
-    var saveTimeout;
-    $scope.save = function () {
-      $timeout.cancel(saveTimeout);
-      saveTimeout = $timeout(function () {
-        // Save the contact and then update the scope & URL with what came
-        // back from the server
-        $scope.contact.$save(function (updated_contact) {
-          $scope.contact = updated_contact;
-          $location.path('/contact/' + updated_contact.name.clean).replace();
-        });
-      }, 1000);
-    };
-  })
-  .controller('Add', function ($scope, $resource, Contact, $location) {
-    // Create a new contact
-    $scope.contact = new Contact({});
-
-    // Save and redirect back home
-    $scope.save = function () {
-      $scope.contact.$save(function () {
-        $location.path('/');
-      });
-    };
-  });
-*/
 
 //appTrader.run(function($route){});

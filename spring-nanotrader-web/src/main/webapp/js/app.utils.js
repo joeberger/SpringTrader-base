@@ -1,39 +1,26 @@
 /**
  * app namespace object
- * @author Carlos Soto <carlos.soto>
  * @author Joe Berger
  */
 var app = {
     utils : {},
-    instances : {},
-    containers : {},
     strings : {},
     conf : {},
-    session : {},
     device : 'computer',
-    cache : {tpls : {}}
 };
 
 /**
  * Renders a pie chart on the desired html id
- * @author Carlos Soto <carlos.soto>
  * @param string htmlId: id of the container (div) for the pie chart
- * @param array data: info to be rendered, array of array pairs of label and value
- * @return Object: plotter object.
+ * @param array data: info to be rendered, array of labels and values
  */
-app.utils.renderPieChart = function (htmlId, data) {
-    //debugger;
-    var error = false,
-        //container = $('#' + htmlId),
-        i;
+app.utils.renderPieChart = function (htmlId, data, $scope) {
+    $scope.errorMsg = null;
+    var i;
     if (data.length < 1) {
-        error = true;
-        //container.html(_.template(nano.utils.getTemplate(nano.conf.tpls.warning))({msg:'noDataAvailable'}));
         $scope.errorMsg = app.strings.noDataAvailable;
     }
-    
-    if (!error) {
-
+    else{
         // Options: http://www.jqplot.com/docs/files/jqPlotOptions-txt.html
         var plot = jQuery.jqplot(htmlId, [data], {
             /**

@@ -64,26 +64,42 @@
             </div> 
             <!-- if user is logged in show the rest of the widgets -->
             <div ng-hide="showLogin">   
+
                 <!-- Portfolio Widgets -->
                 <div class="row" ng-controller="PortfolioCtrl">
                     <div id="nc-portfolio-summary" class="span6"></div>
 
                     <!-- Asset Distribution pie chart -->
+                    <div ng-controller="AssetCtrl">
                     <div class="span6 well show-well">
                         <div class="title"><h3>{{strings.assetDistribution}}</h3>
                             <a class="tooltip-question" title="{{strings.portfolioMsg}}"></a>
                         </div>
-                        <div id="ad-pie-chart" class="jqplot-target"></div>
+                        <div id="ad-pie-chart" class="jqplot-target" ng-hide="errorMsg"></div>
+                        <div class="alert alert-block" ng-show="errorMsg">
+                            <a data-dismiss="alert" class="close">x</a>
+                            <h4 class="alert-heading">{{strings.warning}}</h4>
+                            <p>{{errorMsg}}</p>
+                        </div>
+                    </div>
                     </div>
 
                     <!-- Daily Top Gains pie chart -->
+                    <div ng-controller="GainsCtrl">
                     <div class="span6 well show-well">
                         <div class="title"><h3>{{strings.dailyTopGains}}</h3>
                             <a class="tooltip-question" title="{{strings.gainingMsg}}"></a>
                         </div>
-                        <div id="dtg-pie-chart" class="jqplot-target"></div>
+                        <div id="dtg-pie-chart" class="jqplot-target" ng-hide="errorMsg"></div>
+                        <div class="alert alert-block" ng-show="errorMsg">
+                            <a data-dismiss="alert" class="close">x</a>
+                            <h4 class="alert-heading">{{strings.warning}}</h4>
+                            <p>{{errorMsg}}</p>
+                        </div>
+                    </div>
                     </div>
                 </div>
+
                 <!-- Account Summary Widgets -->
                 <div class="row" ng-controller="AccountSummaryCtrl">
                     <x-account-summary-dir></x-account-summary-dir>
