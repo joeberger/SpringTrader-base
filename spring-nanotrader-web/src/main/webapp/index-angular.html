@@ -70,8 +70,7 @@
                     <div id="nc-portfolio-summary" class="span6"></div>
 
                     <!-- Asset Distribution pie chart -->
-                    <div ng-controller="AssetCtrl">
-                    <div class="span6 well show-well">
+                    <div class="span6 well show-well" ng-controller="AssetCtrl">
                         <div class="title"><h3>{{strings.assetDistribution}}</h3>
                             <a class="tooltip-question" title="{{strings.portfolioMsg}}"></a>
                         </div>
@@ -82,11 +81,9 @@
                             <p>{{errorMsg}}</p>
                         </div>
                     </div>
-                    </div>
 
                     <!-- Daily Top Gains pie chart -->
-                    <div ng-controller="GainsCtrl">
-                    <div class="span6 well show-well">
+                    <div class="span6 well show-well" ng-controller="GainsCtrl">
                         <div class="title"><h3>{{strings.dailyTopGains}}</h3>
                             <a class="tooltip-question" title="{{strings.gainingMsg}}"></a>
                         </div>
@@ -96,7 +93,6 @@
                             <h4 class="alert-heading">{{strings.warning}}</h4>
                             <p>{{errorMsg}}</p>
                         </div>
-                    </div>
                     </div>
                 </div>
 

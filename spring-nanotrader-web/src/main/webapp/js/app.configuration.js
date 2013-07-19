@@ -23,7 +23,6 @@ app.conf = {
 };
 /**
  * API urls
- * @author Joe Berger
  */
 app.conf.urls = {
     logout : app.conf.urlRoot + 'logout',
@@ -79,7 +78,6 @@ app.conf.tpls = {
 
 /**
  * Hash tags to use on the code for the different application routes 
- * @author Joe Berger
  */
 app.conf.links = {
     logout  : '/logout',
